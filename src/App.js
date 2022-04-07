@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRef, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [sliderVal, setSliderVal] = useState(50);
+  const selector = useRef("");
+  const ProgressBar = useRef("");
+
+  const handleSlider = (e) => {
+    console.log(e.target.value);
+
+    setSliderVal(e.target.value);
+
+    if (e.target.value <= 2) {
+      selector.current.style.left = 2 + "%";
+      ProgressBar.current.style.width = 2 + "%";
+    } else if (e.target.value >= 98) {
+      selector.current.style.left = 98 + "%";
+      ProgressBar.current.style.width = 98 + "%";
+    } else {
+      selector.current.style.left = e.target.value + "%";
+      ProgressBar.current.style.width = e.target.value + "%";
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="main">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={sliderVal}
+          id="slider-left"
+          onChange={handleSlider}
+        />
+        <div ref={selector} id="selector">
+          <div className="SelectBtn"></div>
+          <div id="SelectValue">{sliderVal}</div>
+        </div>
+        <div ref={ProgressBar} id="ProgressBar"></div>
+      </div>
     </div>
   );
 }
